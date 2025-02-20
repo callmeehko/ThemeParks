@@ -119,13 +119,13 @@ export async function generateWDWSchedule(event: H3Event, park: WaltDisneyWorldP
 }
 
 export async function generateWDWRides(event: H3Event, park: WaltDisneyWorldParkSlug) : Promise<any> {
-    const data: any = await $fetch(useRuntimeConfig(event).WALTDISNEYWORLD_RIDES + park + '/live');
+    const data: any = await ThemeParkFetch(useRuntimeConfig(event).WALTDISNEYWORLD_RIDES + park + '/live');
     const rides: any = data['liveData'].filter(ride => ride.entityType === "ATTRACTION");
 
     const newRides: ThemeParkRide[] = [];
     rides.forEach(ride => {
         let id = `wdw.${toDisneyWorldSafeURL(park)}.${ride.name.toLocaleLowerCase().replaceAll("~", "").replaceAll("'", "").replaceAll(",", "").replaceAll("/", "").replaceAll('"', "").replaceAll("'", "").replaceAll(".", "").split(" ").join("_")}`
-        if(ride.queue && ride.queue["STANDBY"]) {
+        if(ride.queue && ride.queue["STANDBY"] && ride.status !== "CLOSED" && ride.queue["STANDBY"]["waitTime"] != null) {
             newRides.push({
                 id: id,
                 name: ride.name,

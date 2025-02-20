@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
 interface ParkRegion {
     name: string;
     ids: string[];
