@@ -27,6 +27,27 @@ export function toDisneyWorld(park: WaltDisneyWorldParkID, resort?: WaltDisneyWo
     return `/theme-parks/${park}/`
 }
 
+function toDisneyWorldSafeURL(park: WaltDisneyWorldParkSlug | WaltDisneyWorldParkID | WaltDisneyWorldResortID) : string {
+    if(park == WaltDisneyWorldParkSlug.Magic_Kingdom || WaltDisneyWorldParkID.Magic_Kingdom || WaltDisneyWorldResortID.Magic_Kingdom) {
+        return "magic-kingdom"
+    }
+    if(park == WaltDisneyWorldParkSlug.Epcot || WaltDisneyWorldParkID.Epcot || WaltDisneyWorldResortID.Epcot) {
+        return "epcot"
+    }
+    if(park == WaltDisneyWorldParkSlug.Animal_Kingdom || WaltDisneyWorldParkID.Animal_Kingdom || WaltDisneyWorldResortID.Animal_Kingdom) {
+        return "animal-kingdom"
+    }
+    if(park == WaltDisneyWorldParkSlug.Hollywood_Studios || WaltDisneyWorldParkID.Hollywood_Studios || WaltDisneyWorldResortID.Hollywood_Studios) {
+        return "hollywood-studios"
+    }
+}
+
+function generateSafeOperating(wdwStatus: string) : string {
+    if(wdwStatus == "OPERATING") return "OPEN"
+    if(wdwStatus == "REFURBISHMENT") return "CLOSED"
+    else return wdwStatus
+}
+
 export function RGBDisneyToHex(s: string) : null | string {
     const regex = /color:\s*([^;]+)/;
     const match = s.match(regex);
@@ -98,12 +119,28 @@ export async function generateWDWSchedule(event: H3Event, park: WaltDisneyWorldP
 }
 
 export async function generateWDWRides(event: H3Event, park: WaltDisneyWorldParkSlug) : Promise<any> {
-    const data: any = await $fetch(useRuntimeConfig(event).WALTDISNEYWORLD_RIDES + park + '/children');
-    const rides: any = data["children"].filter(ride => ride.entityType === "ATTRACTION");
+    const data: any = await $fetch(useRuntimeConfig(event).WALTDISNEYWORLD_RIDES + park + '/live');
+    const rides: any = data['liveData'].filter(ride => ride.entityType === "ATTRACTION");
 
     const newRides: ThemeParkRide[] = [];
+    rides.forEach(ride => {
+        let id = `wdw.${toDisneyWorldSafeURL(park)}.${ride.name.toLocaleLowerCase().replaceAll("~", "").replaceAll("'", "").replaceAll("/", "").replaceAll('"', "").replaceAll("'", "").replaceAll(".", "").split(" ").join("_")}`
+        console.log(ride)
+        if(ride.queue && ride.queue["STANDBY"]) {
+            newRides.push({
+                id: id,
+                name: ride.name,
+                status: generateSafeOperating(ride.status),
+                wait_time: ride.queue["STANDBY"]["waitTime"],
+            })
+        } else {
+            newRides.push({
+                id: id,
+                name: ride.name,
+                status: generateSafeOperating(ride.status),
+            })
+        }
+    });
 
-    
-
-    return rides;
+    return newRides;
 }
