@@ -3,7 +3,7 @@ export default defineNitroConfig({
   srcDir: "server",
   preset: "cloudflare_pages",
   routeRules: {
-    '/github/**': { redirect: 'https://github.com/rhawkins030/ThemeParks' },
+    '/github/**': { redirect: 'https://github.com/callmeehko/ThemeParks' },
     '/': { redirect: '/api/' }
   },
   runtimeConfig: {
@@ -11,5 +11,6 @@ export default defineNitroConfig({
     UNIVERSALORLANDO_SERVICE: '',
     WALTDISNEYWORLD_AUTH: '',
     WALTDISNEYWORLD_FACILITY: '',
+    WALTDISNEYWORLD_RIDES: '',
   }
 });
