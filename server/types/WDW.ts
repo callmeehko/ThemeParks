@@ -124,8 +124,7 @@ export async function generateWDWRides(event: H3Event, park: WaltDisneyWorldPark
 
     const newRides: ThemeParkRide[] = [];
     rides.forEach(ride => {
-        let id = `wdw.${toDisneyWorldSafeURL(park)}.${ride.name.toLocaleLowerCase().replaceAll("~", "").replaceAll("'", "").replaceAll("/", "").replaceAll('"', "").replaceAll("'", "").replaceAll(".", "").split(" ").join("_")}`
-        console.log(ride)
+        let id = `wdw.${toDisneyWorldSafeURL(park)}.${ride.name.toLocaleLowerCase().replaceAll("~", "").replaceAll("'", "").replaceAll(",", "").replaceAll("/", "").replaceAll('"', "").replaceAll("'", "").replaceAll(".", "").split(" ").join("_")}`
         if(ride.queue && ride.queue["STANDBY"]) {
             newRides.push({
                 id: id,
