@@ -1,6 +1,7 @@
 import { H3Event } from 'h3';
+import { WaltDisneyWorldParkID } from '~/types/Disney';
 import { ThemeParkGeneral } from '~/types/ThemePark';
-import { generateWDW, generateWDWSchedule, WaltDisneyWorldParkID } from '~/types/WDW';
+import { generateWDW, generateWDWSchedule } from '~/utils/WDW';
 
 async function load(event: H3Event) {
     const data: any = await generateWDW(event, WaltDisneyWorldParkID.Magic_Kingdom);

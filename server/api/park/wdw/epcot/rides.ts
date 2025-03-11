@@ -1,5 +1,6 @@
 import { H3Event } from 'h3';
-import { generateWDWRides, WaltDisneyWorldParkSlug } from '~/types/WDW';
+import { WaltDisneyWorldParkSlug } from '~/types/Disney';
+import { generateWDWRides } from '~/utils/WDW';
 
 async function load(event: H3Event) {
     const data: any = await generateWDWRides(event, WaltDisneyWorldParkSlug.Epcot);
