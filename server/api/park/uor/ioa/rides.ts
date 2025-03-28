@@ -6,7 +6,7 @@ async function load(event: H3Event){
     const data: any = await ThemeParkFetch(useRuntimeConfig(event).UNIVERSALORLANDO_ASSET)
     data.forEach((ride) => {
         if(ride.category != "general" || !ride.venue_id.includes("ioa")) return;
-        if(ride.queues[0].status == "CLOSED" || ride.queues[0].status == "WEATHER_DELAY" ) {
+        if(ride.queues[0].status == "CLOSED" || ride.queues[0].status == "WEATHER_DELAY" || ride.queues[0].status == "BRIEF_DELAY" || ride.queues[0].status == "OPENS_AT" ) {
             dat.push({
                 id: ride.wait_time_attraction_id,
                 name: ride.name,
