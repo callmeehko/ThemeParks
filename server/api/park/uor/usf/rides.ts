@@ -13,19 +13,21 @@ async function load(event: H3Event) {
       ride.queues[0].status == "WEATHER_DELAY" ||
       ride.queues[0].status == "BRIEF_DELAY" ||
       ride.queues[0].status == "OPENS_AT" ||
-      ride.queues[0].status == "AT_CAPACITY" ||
-      ride.queues[0].status == "SPECIAL_EVENT"
+      ride.queues[0].status == "AT_CAPACITY"
     ) {
       dat.push({
         id: ride.wait_time_attraction_id,
         name: ride.name,
         status: ride.queues[0].status,
       });
-    } else if (ride.queues[0].status == "OPEN") {
+    } else if (
+      ride.queues[0].status == "OPEN" ||
+      ride.queues[0].status == "SPECIAL_EVENT"
+    ) {
       dat.push({
         id: ride.wait_time_attraction_id,
         name: ride.name,
-        status: ride.queues[0].status,
+        status: "OPEN",
         wait_time: ride.queues[0].display_wait_time,
       });
     }
