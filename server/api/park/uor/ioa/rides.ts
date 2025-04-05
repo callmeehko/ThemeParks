@@ -13,7 +13,8 @@ async function load(event: H3Event) {
       ride.queues[0].status == "WEATHER_DELAY" ||
       ride.queues[0].status == "BRIEF_DELAY" ||
       ride.queues[0].status == "OPENS_AT" ||
-      ride.queues[0].status == "AT_CAPACITY"
+      ride.queues[0].status == "AT_CAPACITY" ||
+      ride.queues[0].status == "SPECIAL_EVENT"
     ) {
       dat.push({
         id: ride.wait_time_attraction_id,
